@@ -343,8 +343,10 @@ function calculateBalance(arr) {
  *    createChunks(['a', 'b', 'c', 'd', 'e'], 2) => [['a', 'b'], ['c', 'd'], ['e']]
  *    createChunks([10, 20, 30, 40, 50], 1) => [[10], [20], [30], [40], [50]]
  */
-function createChunks(/* arr, chunkSize */) {
-  throw new Error('Not implemented');
+function createChunks(arr, chunkSize) {
+  return Array.from({ length: Math.ceil(arr.length / chunkSize) }, (_, i) =>
+    arr.slice(i * chunkSize, i * chunkSize + chunkSize)
+  );
 }
 
 /**
@@ -414,8 +416,11 @@ function getFalsyValuesCount(arr) {
  *                              [0,0,0,1,0],
  *                              [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  const matrix = new Array(n)
+    .fill(new Array(n).fill(n))
+    .map((item, index) => item.map((_, ind) => (ind === index ? 1 : 0)));
+  return matrix;
 }
 
 /**
@@ -496,8 +501,21 @@ function findCommonElements(arr1, arr2) {
  *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => 2
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => 3
  */
-function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+function findLongestIncreasingSubsequence(nums) {
+  const result = [];
+  let counter = 0;
+
+  nums.reduce((acc, item, index) => {
+    if (acc < item) {
+      counter += 1;
+    }
+    if (acc > item || index === nums.length - 1) {
+      result.push(counter);
+      counter = 1;
+    }
+    return item;
+  }, 0);
+  return Math.max(...result);
 }
 
 /**
@@ -584,8 +602,20 @@ function sortDigitNamesByNumericOrder(arr) {
  *   swapHeadAndTail([]) => []
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const middle = Math.floor(arr.length / 2);
+
+  if (arr.length % 2 === 0) {
+    const head = arr.slice(0, middle);
+    const tail = arr.slice(middle);
+    return tail.concat(head);
+  }
+
+  const head = arr.slice(0, middle);
+  const middleElement = arr[middle];
+  const tail = arr.slice(middle + 1);
+
+  return tail.concat(middleElement, head);
 }
 
 module.exports = {
